@@ -1,0 +1,65 @@
+{% extends 'libreria_db/base.html' %}
+
+{% block title %}Editar libro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning">
+                <h1 class="h5 mb-0">Editar libro</h1>
+            </div>
+
+            <div class="card-body">
+                <p>Modificando: <strong>{{ libro.titulo }}</strong></p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    <div class="mb-3">
+                        {{ form.titulo.label_tag }}
+                        {{ form.titulo }}
+                        <div class="text-danger">
+                            {{ form.titulo.errors }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.autor.label_tag }}
+                        {{ form.autor }}
+                        <div class="text-danger">
+                            {{ form.autor.errors }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.descripcion.label_tag }}
+                        {{ form.descripcion }}
+                        <div class="text-danger">
+                            {{ form.descripcion.errors }}
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        {{ form.disponible }}
+                        {{ form.disponible.label_tag }}
+                        <div class="text-danger">
+                            {{ form.disponible.errors }}
+                        </div>
+                    </div>
+
+                    <a href="{% url 'inicio' %}"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn btn-warning">
+                        Actualizar cambios
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
