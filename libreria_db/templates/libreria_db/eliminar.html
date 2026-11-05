@@ -1,28 +1,64 @@
 {% extends 'libreria_db/base.html' %}
 
-{% block title %}Eliminar Libro{% endblock %}
+{% block title %}Confirmar Eliminación | Librería Virtual{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-        <div class="card shadow-sm border-0 text-center p-4">
-            <div class="text-danger mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                </svg>
-            </div>
-            <h3 class="h4 fw-bold text-dark">¿Confirmas la eliminación?</h3>
-            <p class="text-muted mb-4">Vas a borrar el libro <strong>"{{ libro.titulo }}"</strong>. Esta operación no se puede revertir.</p>
+<div class="row justify-content-center py-4">
+    <div class="col-md-7 col-lg-5">
+        
+        <!-- Tarjeta de advertencia con estilo editorial -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center" style="background-color: #fff; border: 1px solid #eae2d0 !important;">
             
-            <form method="POST">
-                {% csrf_token %}
-                <div class="d-flex justify-content-center gap-2">
-                    <a href="{% url 'inicio' %}" class="btn btn-secondary px-4">Cancelar</a>
-                    <button type="submit" class="btn btn-danger px-4">Sí, Eliminar</button>
+            <!-- Franja decorativa superior en tono advertencia sofisticado -->
+            <div class="py-2" style="background-color: #d9534f;"></div>
+
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Icono temático superior -->
+                <div class="mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle shadow-sm" style="width: 70px; height: 70px; background-color: rgba(217, 83, 79, 0.1); color: #d9534f;">
+                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                    </div>
                 </div>
-            </form>
+
+                <!-- Títulos y descripción -->
+                <h1 class="h4 fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: #2c221e;">
+                    ¿Confirmas la baja de esta obra?
+                </h1>
+                
+                <p class="text-muted small mb-4 px-2" style="line-height: 1.6;">
+                    Estás a punto de retirar permanentemente el libro <br>
+                    <strong style="color: #2c221e; font-family: 'Playfair Display', serif; font-size: 1.05rem;">"{{ libro.titulo }}"</strong><br>
+                    del registro de la biblioteca. Esta operación no se puede revertir.
+                </p>
+                
+                <!-- Formulario de eliminación -->
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="d-flex justify-content-center gap-3 pt-2">
+                        <a href="{% url 'inicio' %}" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-medium">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Cancelar
+                        </a>
+                        
+                        <button type="submit" class="btn px-4 py-2 rounded-pill shadow-sm" style="background-color: #d9534f; color: white; font-weight: 600; transition: all 0.3s ease;">
+                            <i class="fa-solid fa-trash-can me-1"></i> Sí, Eliminar
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    /* Efecto hover suave para el botón de confirmación destructiva */
+    .btn-danger:hover {
+        background-color: #c9302c !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(217, 83, 79, 0.3) !important;
+    }
+</style>
 {% endblock %}
