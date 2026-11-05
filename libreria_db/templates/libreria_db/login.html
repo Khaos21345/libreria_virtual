@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,700">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'libreria_db/css/login.css' %}">
+</head>
+<body>
+
+    <form class="login-form" method="POST">
+        {% csrf_token %}
+        <p class="login-text">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-lock fa-stack-1x"></i>
+            </span>
+        </p>
+        <input type="text" name="username" class="login-username" autofocus="true" required="true" placeholder="Usuario" />
+        <input type="password" name="password" class="login-password" required="true" placeholder="Contraseña" />
+        <input type="submit" name="Login" value="Login" class="login-submit" />
+    </form>
+    
+    <a href="#" class="login-forgot-pass">forgot password?</a>
+    <div class="underlay-photo"></div>
+    <div class="underlay-black"></div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Seleccionamos tanto los inputs de texto, contraseña como textareas
+        const campos = document.querySelectorAll('input[type="text"], input[type="password"], textarea');
+
+        campos.forEach(campo => {
+            campo.setAttribute('maxlength', '30');
+
+            campo.addEventListener('keydown', function(e) {
+                const teclasControl = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+                if (teclasControl.includes(e.key)) {
+                    return;
+                }
+
+                if (this.value.length >= 30 && this.selectionStart === this.selectionEnd) {
+                    e.preventDefault();
+                }
+            });
+
+            campo.addEventListener('input', function() {
+                if (this.value.length > 30) {
+                    this.value = this.value.substring(0, 30);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

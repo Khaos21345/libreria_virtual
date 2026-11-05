@@ -1,55 +1,120 @@
 {% extends 'libreria_db/base.html' %}
 
-{% block title %}Catálogo - Librería Virtual{% endblock %}
+{% block title %}Catálogo de Obras | Librería Virtual{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 fw-bold text-dark">Catálogo de Libros</h1>
-    <a href="{% url 'crear_libro' %}" class="btn btn-success">
-        + Registrar Nuevo Libro
-    </a>
-</div>
-
-<div class="card shadow-sm border-0">
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Estado</th>
-                        <th class="text-end">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for libro in libros %}
-                    <tr>
-                        <td>{{ libro.id }}</td>
-                        <td class="fw-semibold">{{ libro.titulo }}</td>
-                        <td>{{ libro.autor }}</td>
-                        <td>
-                            {% if libro.disponible %}
-                                <span class="badge bg-success">Disponible</span>
-                            {% else %}
-                                <span class="badge bg-secondary">Agotado</span>
-                            {% endif %}
-                        </td>
-                        <td class="text-end">
-                            <a href="{% url 'detalle_libro' libro.id %}" class="btn btn-sm btn-outline-info me-1">Ver</a>
-                            <a href="{% url 'editar_libro' libro.id %}" class="btn btn-sm btn-outline-warning me-1">Editar</a>
-                            <a href="{% url 'eliminar_libro' libro.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">No hay libros registrados en el catálogo.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<div class="container-fluid px-0">
+    
+    <!-- Cabecera de la sección -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom">
+        <div>
+            <h1 class="h3 fw-bold mb-1" style="font-family: 'Playfair Display', serif; color: #2c221e;">
+                <i class="fa-solid fa-book-bookmark text-warning me-2"></i> Catálogo de Libros
+            </h1>
+            <p class="text-muted small mb-0">Explora las obras registradas, gestiona el inventario y consulta el estado de las estanterías.</p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <a href="{% url 'crear_libro' %}" class="btn px-4 py-2 rounded-pill shadow-sm" style="background-color: #c29b38; color: #2c221e; font-weight: 600; transition: all 0.3s ease;">
+                <i class="fa-solid fa-plus-circle me-1"></i> Registrar Nuevo Libro
+            </a>
         </div>
     </div>
+
+    <!-- Tarjeta contenedora de la tabla -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="border: 1px solid #eae2d0 !important;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background-color: #2c221e; color: #f4efe1; font-family: 'Playfair Display', serif;">
+                        <tr>
+                            <th class="py-3 ps-4">#</th>
+                            <th class="py-3">Título de la Obra</th>
+                            <th class="py-3">Autor</th>
+                            <th class="py-3">Estado en Estantería</th>
+                            <th class="py-3 text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libros %}
+                        <tr>
+                            <td class="ps-4 text-muted fw-semibold">0{{ libro.id }}</td>
+                            <td>
+                                <div class="fw-bold" style="color: #2c221e; font-family: 'Playfair Display', serif;">
+                                    {{ libro.titulo }}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-secondary small">
+                                    <i class="fa-solid fa-feather-pointed text-muted me-1"></i> {{ libro.autor }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if libro.disponible %}
+                                    <span class="badge rounded-pill bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-medium">
+                                        <i class="fa-solid fa-circle-check me-1"></i> Disponible
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-3 py-2 fw-medium">
+                                        <i class="fa-solid fa-clock me-1"></i> Préstamo Agotado
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'detalle_libro' libro.id %}" class="btn btn-sm btn-outline-info rounded-start-pill px-3" title="Ver detalles">
+                                        <i class="fa-solid fa-eye"></i> <span class="d-none d-lg-inline">Ver</span>
+                                    </a>
+                                    <a href="{% url 'editar_libro' libro.id %}" class="btn btn-sm btn-outline-warning px-3" title="Editar libro">
+                                        <i class="fa-solid fa-pen-to-square"></i> <span class="d-none d-lg-inline">Editar</span>
+                                    </a>
+                                    <a href="{% url 'eliminar_libro' libro.id %}" class="btn btn-sm btn-outline-danger rounded-end-pill px-3" title="Eliminar registro">
+                                        <i class="fa-solid fa-trash-can"></i> <span class="d-none d-lg-inline">Eliminar</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted py-4">
+                                    <i class="fa-solid fa-books fa-3x mb-3 text-secondary opacity-50"></i>
+                                    <p class="h5 fw-normal" style="font-family: 'Playfair Display', serif;">No hay libros registrados en el catálogo.</p>
+                                    <p class="small text-muted">Comienza agregando tu primera obra literaria haciendo clic en el botón superior.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<style>
+    /* Ajustes visuales sutiles para la tabla */
+    .table th {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-bottom: none;
+    }
+    .table td {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border-color: #f4efe1;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #fcf9f2;
+    }
+    /* Estilos personalizados para los botones de acción en tabla */
+    .btn-outline-info { color: #337ab7; border-color: #bce8f1; }
+    .btn-outline-info:hover { background-color: #337ab7; color: #fff; }
+    
+    .btn-outline-warning { color: #8a6d3b; border-color: #faebcc; }
+    .btn-outline-warning:hover { background-color: #f0ad4e; color: #fff; }
+    
+    .btn-outline-danger { color: #a94442; border-color: #ebccd1; }
+    .btn-outline-danger:hover { background-color: #d9534f; color: #fff; }
+</style>
 {% endblock %}

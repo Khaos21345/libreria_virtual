@@ -1,46 +1,98 @@
 {% extends 'libreria_db/base.html' %}
 
-{% block title %}Detalle - {{ libro.titulo }}{% endblock %}
+{% block title %}Detalle - {{ libro.titulo }} | Librería Virtual{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-dark text-white py-3">
-                <h4 class="card-title mb-0 fs-5">Detalles del Libro</h4>
+    <div class="col-md-9 col-lg-7">
+        
+        <!-- Tarjeta principal con estilo editorial -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="background-color: #fff; border: 1px solid #eae2d0 !important;">
+            
+            <!-- Cabecera de la ficha bibliográfica -->
+            <div class="card-header text-white py-3 px-4 d-flex align-items-center justify-content-between" style="background-color: #2c221e; border-bottom: 3px solid #c29b38;">
+                <div class="d-flex align-items-center">
+                    <div class="p-2 rounded-circle me-3" style="background-color: rgba(194, 155, 56, 0.2); color: #c29b38;">
+                        <i class="fa-solid fa-book-open-reader fs-4"></i>
+                    </div>
+                    <h1 class="h5 mb-0 fw-bold" style="font-family: 'Playfair Display', serif; letter-spacing: 0.5px;">Ficha Bibliográfica</h1>
+                </div>
+                <span class="badge bg-secondary bg-opacity-25 text-light font-monospace small px-2 py-1">ID: 0{{ libro.id }}</span>
             </div>
-            <div class="card-body p-4">
-                <h2 class="card-title text-primary h3 mb-1">{{ libro.titulo }}</h2>
-                <p class="text-muted mb-3">Autor: <strong>{{ libro.autor }}</strong></p>
 
-                <div class="mb-3">
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Título y Autor -->
+                <div class="mb-4 pb-3 border-bottom">
+                    <h2 class="h3 fw-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2c221e;">
+                        {{ libro.titulo }}
+                    </h2>
+                    <p class="text-muted mb-0 fs-6">
+                        <i class="fa-solid fa-feather-pointed text-warning me-1"></i> Autor: <strong class="text-dark">{{ libro.autor }}</strong>
+                    </p>
+                </div>
+
+                <!-- Estado en inventario -->
+                <div class="mb-4">
+                    <span class="text-muted small d-block mb-1">Estado actual:</span>
                     {% if libro.disponible %}
-                        <span class="badge bg-success">Disponible en inventario</span>
+                        <span class="badge rounded-pill bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-medium">
+                            <i class="fa-solid fa-circle-check me-1"></i> Disponible en inventario para préstamo
+                        </span>
                     {% else %}
-                        <span class="badge bg-secondary">Agotado</span>
+                        <span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-3 py-2 fw-medium">
+                            <i class="fa-solid fa-clock me-1"></i> Préstamo Agotado
+                        </span>
                     {% endif %}
                 </div>
 
-                <hr>
+                <!-- Descripción / Sinopsis -->
+                <div class="mb-5 p-4 rounded-3" style="background-color: #f9f6f0; border-left: 4px solid #c29b38;">
+                    <h6 class="fw-bold text-uppercase fs-6 mb-2" style="color: #2c221e; letter-spacing: 1px;">
+                        <i class="fa-solid fa-align-left text-muted me-1"></i> Sinopsis / Reseña
+                    </h6>
+                    <p class="card-text text-secondary mb-0" style="line-height: 1.7; font-size: 0.95rem;">
+                        {% if libro.descripcion %}
+                            {{ libro.descripcion }}
+                        {% else %}
+                            <em class="text-muted">Sin descripción registrada para esta obra literaria.</em>
+                        {% endif %}
+                    </p>
+                </div>
 
-                <p class="card-text text-secondary">
-                    <strong>Descripción:</strong><br>
-                    {% if libro.descripcion %}
-                        {{ libro.descripcion }}
-                    {% else %}
-                        <em>Sin descripción registrada.</em>
-                    {% endif %}
-                </p>
-
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <a href="{% url 'inicio' %}" class="btn btn-outline-secondary">← Volver al catálogo</a>
-                    <div>
-                        <a href="{% url 'editar_libro' libro.id %}" class="btn btn-warning me-1">Editar</a>
-                        <a href="{% url 'eliminar_libro' libro.id %}" class="btn btn-danger">Eliminar</a>
+                <!-- Botones de Acción y Retorno -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 pt-3 border-top">
+                    <a href="{% url 'inicio' %}" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-medium w-100 w-md-auto text-center">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Volver al catálogo
+                    </a>
+                    
+                    <div class="d-flex gap-2 w-100 w-md-auto justify-content-end">
+                        <a href="{% url 'editar_libro' libro.id %}" class="btn px-4 py-2 rounded-pill text-dark fw-semibold flex-grow-1 flex-md-grow-0 text-center" style="background-color: #f0ad4e; border: none; transition: all 0.2s;">
+                            <i class="fa-solid fa-pen-to-square me-1"></i> Editar
+                        </a>
+                        <a href="{% url 'eliminar_libro' libro.id %}" class="btn px-4 py-2 rounded-pill text-white fw-semibold flex-grow-1 flex-md-grow-0 text-center" style="background-color: #d9534f; border: none; transition: all 0.2s;">
+                            <i class="fa-solid fa-trash-can me-1"></i> Eliminar
+                        </a>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    /* Efectos hover sutiles para los botones de edición y eliminación */
+    .btn-warning:hover {
+        background-color: #ec971f !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(240, 173, 78, 0.3);
+    }
+    .btn-danger:hover {
+        background-color: #c9302c !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(217, 83, 79, 0.3);
+    }
+</style>
 {% endblock %}
